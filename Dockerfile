@@ -6,5 +6,8 @@ EXPOSE 3000 35729
 COPY ./docs /app/docs
 COPY ./website /app/website
 RUN yarn install
+RUN yarn build
 
-CMD ["yarn", "start"]
+FROM bitnami/nginx:latest as release
+
+COPY --from=build /app/website/build/nikio /app
